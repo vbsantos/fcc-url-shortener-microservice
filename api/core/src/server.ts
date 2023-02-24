@@ -1,5 +1,7 @@
-import express, { Express } from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
+import express, { Express } from "express";
+
 import { UrlController, UrlControllerI } from "./Controllers/Url.Controller";
 import { UrlMiddleware, UrlMiddlewareI } from "./Middlerwares/Url.Middleware";
 
@@ -15,6 +17,12 @@ const app: Express = express();
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(urlMiddleware.errorHandler);
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST"],
+  })
+);
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);

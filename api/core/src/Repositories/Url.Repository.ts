@@ -1,5 +1,5 @@
-import mysql from "mysql2/promise";
 import { config as configEnvironmentVariables } from "dotenv";
+import mysql from "mysql2/promise";
 
 // Environment Variables
 configEnvironmentVariables();
