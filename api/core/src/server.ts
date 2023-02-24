@@ -18,10 +18,11 @@ app.use(urlMiddleware.errorHandler);
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
-app.get("/shorturl/:id", urlController.getShortUrl);
+app.get("/shorturl/:id", urlController.redirectToUrl);
 
 if (!module.parent) {
-  app.listen(3000, () => console.log("http://localhost:3000/"));
+  const port = 3000;
+  app.listen(port, () => console.log(`API is ready at port ${port}/`));
 }
 
 export default app;

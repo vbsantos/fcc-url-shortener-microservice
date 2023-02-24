@@ -7,12 +7,12 @@ import {
 } from "../Repositories/Url.Repository";
 
 export interface ApiResponseI {
-  short_url: number;
+  short_url: string;
   original_url: string;
 }
 
 export interface UrlControllerI {
-  getShortUrl(req: Request, res: Response, next: NextFunction): Promise<void>;
+  redirectToUrl(req: Request, res: Response, next: NextFunction): Promise<void>;
   postShortUrl(req: Request, res: Response, next: NextFunction): Promise<void>;
 }
 
@@ -41,6 +41,8 @@ export class UrlController implements UrlControllerI {
     next: NextFunction
   ): Promise<void> {
     const { url } = req.body;
+    const apiURL = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+
     try {
       const isUrlValid = await UrlController.validateUrl(url);
 
@@ -53,7 +55,7 @@ export class UrlController implements UrlControllerI {
       const dbResponse = await urlRepository.addUrl(url);
 
       const response: ApiResponseI = {
-        short_url: dbResponse.id,
+        short_url: `${apiURL}/${dbResponse.id}`,
         original_url: url,
       };
 
@@ -64,7 +66,7 @@ export class UrlController implements UrlControllerI {
     }
   }
 
-  public async getShortUrl(
+  public async redirectToUrl(
     req: Request,
     res: Response,
     next: NextFunction
@@ -85,13 +87,7 @@ export class UrlController implements UrlControllerI {
         return next();
       }
 
-      const response: ApiResponseI = {
-        short_url: dbResponse.id,
-        original_url: dbResponse.url,
-      };
-
-      // Code 200 - Ok
-      res.status(200).json(response);
+      res.redirect(dbResponse.url)
     } catch (error) {
       res.status(500).json({ error: "Internal Error" });
     }
