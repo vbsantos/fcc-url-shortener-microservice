@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.png" />
+  <link rel="stylesheet" type="text/css" href="./style.css">
+  <title>URL Shortener Microservice</title>
+</head>
+
+<body>
+  <div id="main-container">
+    <h1>URL Shortener Microservice</h1>
+    <p>A simple API service that allows you to shorten long URLs into shorter ones.</p>
+
+    <h2>Example Usage</h2>
+    <p>
+      <code>POST /api/shorturl/</code>
+    </p>
+    <p>
+      <code>GET /api/shorturl/1</code>
+    </p>
+    <!-- <p>
+      <a href="/api/January%201,%202022" target="_blank">
+        <code>GET /api/January%201,%202022</code>
+      </a>
+    </p> -->
+
+    <h2>Example Output</h2>
+    <p><code>{ "short_url": 1, "original_url": "https://vinicius.bohr.io/" }</code></p>
+
+    <!-- <h2>Try yourself</h2>
+    <p>Enter a date in either Unix timestamp or UTC format and get the converted result.</p>
+
+    <form action="/api/" method="get">
+      <p>
+        <label for="date">Enter a date:</label>
+        <input type="text" name="date" id="date" placeholder="1450137600 or 2015-12-15T00:00:00Z">
+        <button type="submit">Convert</button>
+      </p>
+    </form>
+
+    <p id="result">-->
+      <!-- Results will be displayed here -->
+    <!--</p> -->
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
