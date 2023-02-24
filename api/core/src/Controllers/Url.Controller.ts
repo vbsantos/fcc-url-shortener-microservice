@@ -85,7 +85,8 @@ export class UrlController implements UrlControllerI {
         return next();
       }
 
-      res.status(301).redirect(dbResponse.url)
+      // Code 302 - Redirect
+      res.redirect(302, dbResponse.url);
     } catch (error) {
       res.status(500).json({ error: "Internal Error" });
     }
