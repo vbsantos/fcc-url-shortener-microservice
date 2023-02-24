@@ -24,7 +24,7 @@ export interface UrlRepositoryI {
   getUrlById(id: number): Promise<UrlEntityI | null>;
 }
 
-export class MysqlUrlRepository implements UrlRepositoryI {
+export class UrlRepository implements UrlRepositoryI {
   public async addUrl(url: string): Promise<UrlEntityI> {
     const connection = await pool.getConnection();
 

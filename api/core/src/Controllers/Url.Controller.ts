@@ -1,8 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import {
-  MysqlUrlRepository,
-  UrlRepositoryI,
-} from "../Repositories/Url.Repository";
+import { UrlRepository,  UrlRepositoryI} from "../Repositories/Url.Repository";
 import { UrlService, UrlServiceI } from "../Services/Url.Service";
 
 export interface ApiResponseI {
@@ -16,7 +13,7 @@ export interface UrlControllerI {
 }
 
 // Repository
-const urlRepository: UrlRepositoryI = new MysqlUrlRepository();
+const urlRepository: UrlRepositoryI = new UrlRepository();
 const urlService: UrlServiceI = new UrlService();
 
 export class UrlController implements UrlControllerI {
@@ -29,8 +26,8 @@ export class UrlController implements UrlControllerI {
     const isUrlValid = await urlService.validateUrl(url);
 
     if (!isUrlValid) {
-      // wrong input
-      res.status(422).json({ error: "invalid url" });
+      // Code 422 - wrong input
+      res.json({ error: "invalid url" });
       return next();
     }
 
