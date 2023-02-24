@@ -27,8 +27,7 @@ export class UrlController implements UrlControllerI {
   ): Promise<void> {
     const { url }: { url: string } = req.body;
     try {
-      const { protocol, hostname } = urlService.parseUrl(url);
-      const isUrlValid = await urlService.validateUrl(hostname);
+      const isUrlValid = await urlService.validateUrl(url);
 
       if (!isUrlValid) {
         // wrong input
@@ -36,15 +35,10 @@ export class UrlController implements UrlControllerI {
         return next();
       }
 
-      let updatedUrl = url;
-      if (!protocol) {
-        updatedUrl = urlService.addProtocol(url, "http");
-      }
-
-      const dbResponse = await urlRepository.addUrl(updatedUrl);
+      const dbResponse = await urlRepository.addUrl(url);
 
       const response: ApiResponseI = {
-        original_url: updatedUrl,
+        original_url: url,
         short_url: dbResponse.id,
       };
 
