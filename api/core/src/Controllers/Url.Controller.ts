@@ -7,7 +7,7 @@ import {
 } from "../Repositories/Url.Repository";
 
 export interface ApiResponseI {
-  short_url: string;
+  short_url: number;
   original_url: string;
 }
 
@@ -41,8 +41,6 @@ export class UrlController implements UrlControllerI {
     next: NextFunction
   ): Promise<void> {
     const { url } = req.body;
-    const apiURL = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-
     try {
       const isUrlValid = await UrlController.validateUrl(url);
 
@@ -55,8 +53,8 @@ export class UrlController implements UrlControllerI {
       const dbResponse = await urlRepository.addUrl(url);
 
       const response: ApiResponseI = {
-        short_url: `${apiURL}/${dbResponse.id}`,
         original_url: url,
+        short_url: dbResponse.id,
       };
 
       // Code 201 - Created
