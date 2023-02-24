@@ -1,10 +1,9 @@
-import dns from "dns";
-import util from "util";
 import { NextFunction, Request, Response } from "express";
 import {
   MysqlUrlRepository,
   UrlRepositoryI,
 } from "../Repositories/Url.Repository";
+import { UrlService, UrlServiceI } from "../Services/Url.Service";
 
 export interface ApiResponseI {
   short_url: number;
@@ -18,32 +17,18 @@ export interface UrlControllerI {
 
 // Repository
 const urlRepository: UrlRepositoryI = new MysqlUrlRepository();
+const urlService: UrlServiceI = new UrlService();
 
 export class UrlController implements UrlControllerI {
-  private static async validateUrl(url: string): Promise<boolean> {
-    try {
-      if (!url) {
-        return false;
-      }
-
-      const validateUrl = util.promisify(dns.lookup);
-      await validateUrl(url);
-
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
   public async postShortUrl(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { url } = req.body;
+    const { url }: { url: string } = req.body;
     try {
-      const [protocol, hostname] = url.split("//")
-      const isUrlValid = await UrlController.validateUrl(hostname);
+      const { protocol, hostname } = urlService.parseUrl(url);
+      const isUrlValid = await urlService.validateUrl(hostname);
 
       if (!isUrlValid) {
         // wrong input
@@ -53,7 +38,7 @@ export class UrlController implements UrlControllerI {
 
       let updatedUrl = url;
       if (!protocol) {
-        updatedUrl = "http://" + url
+        updatedUrl = urlService.addProtocol(url, "http");
       }
 
       const dbResponse = await urlRepository.addUrl(updatedUrl);
