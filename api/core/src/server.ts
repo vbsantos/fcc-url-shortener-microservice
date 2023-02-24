@@ -15,17 +15,21 @@ const urlMiddleware: UrlMiddlewareI = new UrlMiddleware();
 const app: Express = express();
 
 // Middlewares
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(urlMiddleware.errorHandler);
-app.use(cors({ origin: "*" }));
+app.use(cors());
+app.use(bodyParser.json());
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
 app.get("/shorturl/:id", urlController.redirectToUrl);
 
+// Error Handler
+app.use(urlMiddleware.errorHandler);
+
 if (!module.parent) {
   const port = 3000;
-  app.listen(port, () => console.log(`API is ready at port ${port}/`));
+  app.listen(port, () =>
+    console.log(`API is ready at http://localhost:${port}/`)
+  );
 }
 
 export default app;

@@ -19,9 +19,10 @@ export class UrlService implements UrlServiceI {
         return false;
       }
 
-      const dnsLookup = util.promisify(dns.lookup);
       const hostname = parsedUrl.hostname || parsedUrl.pathname || rawUrl;
-      await dnsLookup(hostname);
+
+      const dnsLookupAsync = util.promisify(dns.lookup);
+      await dnsLookupAsync(hostname);
 
       return true;
     } catch (error) {
