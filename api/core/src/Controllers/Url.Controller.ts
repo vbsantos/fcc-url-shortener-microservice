@@ -62,7 +62,7 @@ export class UrlController implements UrlControllerI {
       return next();
     }
 
-    // Code 302 - Redirect
-    res.redirect(dbResponse.url);
+    // Code 301 - Permanent Redirect
+    res.redirect(301, dbResponse.url);
   }
 }
