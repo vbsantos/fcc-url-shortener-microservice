@@ -23,17 +23,17 @@ export class UrlController implements UrlControllerI {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+    const { url }: { url: string } = req.body;
+
+    const isUrlValid = await urlService.validateUrl(url);
+
+    if (!isUrlValid) {
+      // Code 422 - wrong input
+      res.status(422).json({ error: "invalid url" });
+      return next();
+    }
+
     try {
-      const { url }: { url: string } = req.body;
-
-      const isUrlValid = await urlService.validateUrl(url);
-
-      if (!isUrlValid) {
-        // Code 422 - wrong input
-        res.json({ error: "invalid url" });
-        return next();
-      }
-
       const dbResponse = await urlRepository.addUrl(url);
 
       const response: ApiResponseI = {
@@ -42,7 +42,7 @@ export class UrlController implements UrlControllerI {
       };
 
       // Code 200 - Ok
-      res.json(response);
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -53,25 +53,25 @@ export class UrlController implements UrlControllerI {
     res: Response,
     next: NextFunction
   ): Promise<void> {
+    const id = +req.params.id;
+
+    if (isNaN(id)) {
+      // wrong input
+      res.status(422).json({ error: "Wrong Input" });
+      return next();
+    }
+
     try {
-      const id = +req.params.id;
-
-      if (isNaN(id)) {
-        // wrong input
-        res.sendStatus(422);
-        return next();
-      }
-
       const dbResponse = await urlRepository.getUrlById(id);
 
       if (!dbResponse?.id || !dbResponse?.url) {
         // url not found
-        res.sendStatus(404);
+        res.status(404).json({ error: "Url Not Found" });
         return next();
       }
 
       // Code 302 - Temporary Redirect
-      res.redirect(302, dbResponse.url);
+      res.status(302).redirect(dbResponse.url);
     } catch (error) {
       next(error);
     }
