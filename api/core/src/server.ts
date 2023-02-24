@@ -17,12 +17,7 @@ const app: Express = express();
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(urlMiddleware.errorHandler);
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST"],
-  })
-);
+app.use(cors({ origin: "*" }));
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
