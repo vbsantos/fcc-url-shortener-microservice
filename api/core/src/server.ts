@@ -13,7 +13,7 @@ const urlMiddleware: UrlMiddlewareI = new UrlMiddleware();
 const app: Express = express();
 
 // Middlewares
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(urlMiddleware.errorHandler);
 
 // Routes
