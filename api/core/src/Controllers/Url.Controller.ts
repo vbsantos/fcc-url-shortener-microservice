@@ -42,7 +42,8 @@ export class UrlController implements UrlControllerI {
   ): Promise<void> {
     const { url } = req.body;
     try {
-      const isUrlValid = await UrlController.validateUrl(url);
+      const [protocol, hostname] = url.split("//")
+      const isUrlValid = await UrlController.validateUrl(hostname);
 
       if (!isUrlValid) {
         // wrong input
@@ -50,10 +51,15 @@ export class UrlController implements UrlControllerI {
         return next();
       }
 
-      const dbResponse = await urlRepository.addUrl(url);
+      let updatedUrl = url;
+      if (!protocol) {
+        updatedUrl = "http://" + url
+      }
+
+      const dbResponse = await urlRepository.addUrl(updatedUrl);
 
       const response: ApiResponseI = {
-        original_url: url,
+        original_url: updatedUrl,
         short_url: dbResponse.id,
       };
 
@@ -86,7 +92,7 @@ export class UrlController implements UrlControllerI {
       }
 
       // Code 302 - Redirect
-      res.redirect(302, dbResponse.url);
+      res.status(302).redirect(dbResponse.url);
     } catch (error) {
       res.status(500).json({ error: "Internal Error" });
     }
