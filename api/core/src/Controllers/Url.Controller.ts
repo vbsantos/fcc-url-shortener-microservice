@@ -42,8 +42,8 @@ export class UrlController implements UrlControllerI {
         short_url: dbResponse.id,
       };
 
-      // Code 201 - Created
-      res.status(201).json(response);
+      // Code 200 - Ok
+      res.send(response);
     } catch (error) {
       res.status(500).json({ error: "Internal Error" });
     }
@@ -71,7 +71,7 @@ export class UrlController implements UrlControllerI {
       }
 
       // Code 302 - Redirect
-      res.status(302).redirect(dbResponse.url);
+      res.redirect(dbResponse.url);
     } catch (error) {
       res.status(500).json({ error: "Internal Error" });
     }
