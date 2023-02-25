@@ -16,11 +16,11 @@ const app: Express = express();
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.options("/shorturl/:id", cors({ origin: true }));
+// app.options("/shorturl/:id", cors({ origin: true }));
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
-app.get("/shorturl/:id", urlController.redirectToUrl);
+app.get("/shorturl/:id", cors({ origin: true }), urlController.redirectToUrl);
 
 // Error Handler Middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
