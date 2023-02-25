@@ -1,10 +1,6 @@
-import express, {
-  Express,
-  json,
-  NextFunction,
-  Request,
-  Response,
-} from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import express, { Express, NextFunction, Request, Response } from "express";
 
 import { UrlController, UrlControllerI } from "./Controllers/Url.Controller";
 import { UrlRepository, UrlRepositoryI } from "./Repositories/Url.Repository";
@@ -17,8 +13,29 @@ const urlController: UrlControllerI = new UrlController(urlService);
 // Express
 const app: Express = express();
 
-// Middlewares
-app.use(json());
+app.use(cors());
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Logger Middleware
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(500);
+  res.send(JSON.stringify(req.body));
+  return res.end();
+
+  const { method, url } = req;
+  const { statusCode } = res;
+  const log = `${method}: ${url} ${statusCode}`;
+  console.log(log);
+
+  console.log(JSON.stringify(req.body));
+  console.log(req.body);
+  console.log(req.body.url);
+  console.log(req.body["`url"]);
+
+  next();
+});
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
