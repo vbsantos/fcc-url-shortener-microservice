@@ -21,7 +21,7 @@ app.post("/shorturl", urlController.postShortUrl);
 app.get(
   "/shorturl/:id",
   cors({
-    origin: "*",
+    origin: "https://www.freecodecamp.org",
   }),
   urlController.redirectToUrl
 );
