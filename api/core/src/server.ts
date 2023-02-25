@@ -1,6 +1,6 @@
-import bodyParser from "body-parser";
-import cors from "cors";
-import express, { Express } from "express";
+// import bodyParser from "body-parser";
+// import cors from "cors";
+import express, { Express, json } from "express";
 
 import { UrlController, UrlControllerI } from "./Controllers/Url.Controller";
 // import { UrlMiddleware, UrlMiddlewareI } from "./Middlerwares/Url.Middleware";
@@ -15,8 +15,8 @@ const urlController: UrlControllerI = new UrlController();
 const app: Express = express();
 
 // Middlewares
-app.use(cors());
-app.use(bodyParser.json());
+// app.use(cors({ origin: "*" }));
+app.use(json());
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
