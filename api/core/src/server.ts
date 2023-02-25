@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
-app.get("/shorturl/:id", cors({ origin: false }), urlController.redirectToUrl);
+app.get("/shorturl/:id", cors({ origin: true }), urlController.redirectToUrl);
 
 // Error Handler Middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
