@@ -15,7 +15,7 @@ const urlController: UrlControllerI = new UrlController();
 const app: Express = express();
 
 // Middlewares
-app.use(cors({ origin: "*" }));
+app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
