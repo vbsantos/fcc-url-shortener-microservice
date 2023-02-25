@@ -12,7 +12,7 @@ form.addEventListener('submit', (event) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({url})
+    body: JSON.stringify({ url })
   })
     .then(response => {
       if (!response.ok) {
@@ -21,8 +21,9 @@ form.addEventListener('submit', (event) => {
       return response.json();
     })
     .then(data => {
+      const shortUrl = `${window.location.href}/${data.short_url}`;
       // Update result container
-      resultContainer.innerHTML = `<code>${JSON.stringify(data)}</code>`;
+      resultContainer.innerHTML = `<code>${JSON.stringify(data)}</code><a href="${shortUrl}">${shortUrl}</a>`;
     })
     .catch(error => {
       console.error('Error:', error);
