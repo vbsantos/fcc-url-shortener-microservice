@@ -21,11 +21,15 @@ form.addEventListener('submit', (event) => {
       return response.json();
     })
     .then(data => {
-      const shortUrl = `${window.location.href}api/shorturl/${data.short_url}`;
-      // Update result container
-      resultContainer.innerHTML = `<code>${JSON.stringify(data)}</code>
-      <br/>
-      <a href="${shortUrl}">${shortUrl}</a>`;
+      if (data.short_url) {
+        const shortUrl = `${window.location.href}api/shorturl/${data.short_url}`;
+        // Update result container
+        resultContainer.innerHTML = `<code>${JSON.stringify(data)}</code>
+        <br/>
+        <a href="${shortUrl}">${shortUrl}</a>`;
+      } else {
+        resultContainer.innerHTML = `<code>${JSON.stringify(data)}</code>`;
+      }
     })
     .catch(error => {
       console.error('Error:', error);
