@@ -1,6 +1,6 @@
-// import bodyParser from "body-parser";
+import { json } from "body-parser";
 // import cors from "cors";
-import express, { Express, json } from "express";
+import express, { Express } from "express";
 
 import { UrlController, UrlControllerI } from "./Controllers/Url.Controller";
 // import { UrlMiddleware, UrlMiddlewareI } from "./Middlerwares/Url.Middleware";
