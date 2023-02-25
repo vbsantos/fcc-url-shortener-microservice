@@ -29,7 +29,7 @@ export class UrlController implements UrlControllerI {
 
     if (!isUrlValid) {
       // Code 422 - wrong input
-      res.status(422).json({ error: "invalid url" });
+      res.json({ error: "invalid url" });
       return next();
     }
 
@@ -42,7 +42,7 @@ export class UrlController implements UrlControllerI {
     };
 
     // Code 200 - Ok
-    res.status(200).json(response);
+    res.json(response);
     // } catch (error) {
     // next(error);
     // }
@@ -57,7 +57,7 @@ export class UrlController implements UrlControllerI {
 
     if (isNaN(id)) {
       // wrong input
-      res.status(422).json({ error: "Wrong Input" });
+      res.json({ error: "Wrong Input" });
       return next();
     }
 
@@ -66,12 +66,12 @@ export class UrlController implements UrlControllerI {
 
     if (!dbResponse?.id || !dbResponse?.url) {
       // url not found
-      res.status(404).json({ error: "Url Not Found" });
+      res.json({ error: "Url Not Found" });
       return next();
     }
 
     // Code 302 - Temporary Redirect
-    res.status(302).redirect(dbResponse.url);
+    res.redirect(dbResponse.url);
     // } catch (error) {
     // next(error);
     // }
