@@ -1,5 +1,5 @@
 import bodyParser from "body-parser";
-// import cors from "cors";
+import cors from "cors";
 import express, { Express, NextFunction, Request, Response } from "express";
 
 import { UrlController, UrlControllerI } from "./Controllers/Url.Controller";
@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
-app.get("/shorturl/:id", urlController.redirectToUrl);
+app.get("/shorturl/:id", cors(), urlController.redirectToUrl);
 
 // Error Handler Middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
