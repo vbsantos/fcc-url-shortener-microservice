@@ -1,5 +1,5 @@
 import bodyParser from "body-parser";
-// import cors from "cors";
+import cors from "cors";
 import express, { Express } from "express";
 
 import { UrlController, UrlControllerI } from "./Controllers/Url.Controller";
@@ -15,7 +15,7 @@ const urlController: UrlControllerI = new UrlController();
 const app: Express = express();
 
 // Middlewares
-// app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 
 // Routes
