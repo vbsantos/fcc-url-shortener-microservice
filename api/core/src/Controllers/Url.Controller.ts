@@ -19,11 +19,12 @@ export class UrlController implements UrlControllerI {
   public async postShortUrl(req: Request, res: Response): Promise<void> {
     const { url }: { url: string } = req.body;
 
-    const response = await this.urlService.createShortUrl(url);
+    // FIXME
+    const response = await this.urlService.createShortUrl(url, JSON.stringify(req.body));
 
     if (!response) {
       // Code 422 - wrong input
-      res.status(422).json({ error: "invalid url" });
+      res.json({ error: "invalid url" });
     } else {
       // Code 200 - Ok
       res.json(response);
