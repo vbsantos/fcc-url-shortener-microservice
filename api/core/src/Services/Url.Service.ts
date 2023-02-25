@@ -3,8 +3,7 @@ import util from "util";
 import url from "url";
 
 // Repository
-import { UrlRepository, UrlRepositoryI } from "../Repositories/Url.Repository";
-// const urlRepository: UrlRepositoryI = new UrlRepository();
+import { UrlRepositoryI } from "../Repositories/Url.Repository";
 
 export interface ResponseI {
   original_url: string;
@@ -12,6 +11,7 @@ export interface ResponseI {
 }
 
 export interface UrlServiceI {
+  validateUrl(rawUrl: string): Promise<boolean>;
   createShortUrl(rawUrl: string): Promise<ResponseI | null>;
   getShortUrl(shortUrlId: number): Promise<ResponseI | null>;
 }
@@ -19,12 +19,14 @@ export interface UrlServiceI {
 export class UrlService implements UrlServiceI {
   private urlRepository: UrlRepositoryI;
 
-  constructor() {
-    this.urlRepository = new UrlRepository();
+  constructor(urlRepository: UrlRepositoryI) {
+    this.urlRepository = urlRepository;
     this.validateUrl = this.validateUrl.bind(this);
+    this.createShortUrl = this.createShortUrl.bind(this);
+    this.getShortUrl = this.getShortUrl.bind(this);
   }
 
-  private async validateUrl(rawUrl: string): Promise<boolean> {
+  async validateUrl(rawUrl: string): Promise<boolean> {
     try {
       if (!rawUrl) {
         return false;

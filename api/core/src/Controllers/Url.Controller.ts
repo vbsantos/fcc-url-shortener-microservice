@@ -1,23 +1,25 @@
 import { NextFunction, Request, Response } from "express";
 
-import { UrlService, UrlServiceI } from "../Services/Url.Service";
+import { UrlServiceI } from "../Services/Url.Service";
 
 export interface UrlControllerI {
   redirectToUrl(req: Request, res: Response, next: NextFunction): Promise<void>;
   postShortUrl(req: Request, res: Response, next: NextFunction): Promise<void>;
 }
 
-// Service
-const urlService: UrlServiceI = new UrlService();
-
 export class UrlController implements UrlControllerI {
-  public async postShortUrl(
-    req: Request,
-    res: Response,
-  ): Promise<void> {
+  private urlService: UrlServiceI;
+
+  constructor(urlService: UrlServiceI) {
+    this.urlService = urlService;
+    this.postShortUrl = this.postShortUrl.bind(this);
+    this.redirectToUrl = this.redirectToUrl.bind(this);
+  }
+
+  public async postShortUrl(req: Request, res: Response): Promise<void> {
     const { url }: { url: string } = req.body;
 
-    const response = await urlService.createShortUrl(url);
+    const response = await this.urlService.createShortUrl(url);
 
     if (!response) {
       // Code 422 - wrong input
@@ -28,13 +30,10 @@ export class UrlController implements UrlControllerI {
     }
   }
 
-  public async redirectToUrl(
-    req: Request,
-    res: Response,
-  ): Promise<void> {
+  public async redirectToUrl(req: Request, res: Response): Promise<void> {
     const id = +req.params.id;
 
-    const response = await urlService.getShortUrl(id);
+    const response = await this.urlService.getShortUrl(id);
 
     if (!response) {
       // wrong input
