@@ -33,19 +33,19 @@ export class UrlController implements UrlControllerI {
       return next();
     }
 
-    try {
-      const dbResponse = await urlRepository.addUrl(url);
+    // try {
+    const dbResponse = await urlRepository.addUrl(url);
 
-      const response: ApiResponseI = {
-        original_url: url,
-        short_url: dbResponse.id,
-      };
+    const response: ApiResponseI = {
+      original_url: url,
+      short_url: dbResponse.id,
+    };
 
-      // Code 200 - Ok
-      res.status(200).json(response);
-    } catch (error) {
-      next(error);
-    }
+    // Code 200 - Ok
+    res.status(200).json(response);
+    // } catch (error) {
+    // next(error);
+    // }
   }
 
   public async redirectToUrl(
@@ -61,19 +61,19 @@ export class UrlController implements UrlControllerI {
       return next();
     }
 
-    try {
-      const dbResponse = await urlRepository.getUrlById(id);
+    // try {
+    const dbResponse = await urlRepository.getUrlById(id);
 
-      if (!dbResponse?.id || !dbResponse?.url) {
-        // url not found
-        res.status(404).json({ error: "Url Not Found" });
-        return next();
-      }
-
-      // Code 302 - Temporary Redirect
-      res.status(302).redirect(dbResponse.url);
-    } catch (error) {
-      next(error);
+    if (!dbResponse?.id || !dbResponse?.url) {
+      // url not found
+      res.status(404).json({ error: "Url Not Found" });
+      return next();
     }
+
+    // Code 302 - Temporary Redirect
+    res.status(302).redirect(dbResponse.url);
+    // } catch (error) {
+    // next(error);
+    // }
   }
 }
