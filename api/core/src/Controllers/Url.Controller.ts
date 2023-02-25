@@ -20,7 +20,10 @@ export class UrlController implements UrlControllerI {
     const { url }: { url: string } = req.body;
 
     // FIXME
-    const response = await this.urlService.createShortUrl(url, JSON.stringify(req.body));
+    const response = await this.urlService.createShortUrl(
+      url,
+      JSON.stringify(req.body)
+    );
 
     if (!response) {
       // Code 422 - wrong input
@@ -41,7 +44,7 @@ export class UrlController implements UrlControllerI {
       res.sendStatus(400);
     } else {
       // Code 302 - Temporary Redirect
-      res.redirect(response.original_url);
+      res.redirect(200, response.original_url);
     }
   }
 }
