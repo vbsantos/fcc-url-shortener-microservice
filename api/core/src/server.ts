@@ -13,14 +13,16 @@ const urlController: UrlControllerI = new UrlController(urlService);
 // Express
 const app: Express = express();
 
-// app.use(cors());
+app.use(cors({
+  origin: ['https://www.freecodecamp.org', '*']
+}));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
-app.get("/shorturl/:id", cors(), urlController.redirectToUrl);
+app.get("/shorturl/:id", urlController.redirectToUrl);
 
 // Error Handler Middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
