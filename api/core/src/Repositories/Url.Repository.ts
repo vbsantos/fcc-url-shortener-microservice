@@ -15,7 +15,7 @@ const pool = mysql.createPool({
 });
 
 export interface UrlEntityI {
-  id: number;
+  id: string;
   url: string;
 }
 
