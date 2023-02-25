@@ -16,7 +16,7 @@ const app: Express = express();
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.options("/shorturl/:id", cors({ origin: true }));
+app.options("*", cors({ origin: false }));
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
