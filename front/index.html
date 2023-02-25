@@ -29,20 +29,20 @@
     <h2>Example Output</h2>
     <p><code>{ "short_url": 1, "original_url": "https://vinicius.bohr.io/" }</code></p>
 
-    <!-- <h2>Try yourself</h2>
-    <p>Enter a date in either Unix timestamp or UTC format and get the converted result.</p>
+    <h2>Try yourself</h2>
+    <p>Enter a website URL and get the a short URL as result.</p>
 
-    <form action="/api/" method="get">
+    <form action="/api/shorturl" method="post">
       <p>
-        <label for="date">Enter a date:</label>
-        <input type="text" name="date" id="date" placeholder="1450137600 or 2015-12-15T00:00:00Z">
-        <button type="submit">Convert</button>
+        <label for="url">Enter a url:</label>
+        <input type="text" name="url" id="url" placeholder="https://vinicius.bohr.io/">
+        <button type="submit">Send</button>
       </p>
     </form>
 
-    <p id="result">-->
+    <p id="result">
       <!-- Results will be displayed here -->
-    <!--</p> -->
+    </p>
   </div>
 
   <script src="script.js"></script>
