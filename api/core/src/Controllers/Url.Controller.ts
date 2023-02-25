@@ -44,7 +44,7 @@ export class UrlController implements UrlControllerI {
       res.sendStatus(400);
     } else {
       // Code 302 - Temporary Redirect
-      res.redirect(200, response.original_url);
+      res.redirect(response.original_url);
     }
   }
 }
