@@ -1,4 +1,3 @@
-import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Express, NextFunction, Request, Response } from "express";
 
@@ -14,9 +13,9 @@ const urlController: UrlControllerI = new UrlController(urlService);
 const app: Express = express();
 
 // Middlewares
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.options("*", cors({ origin: false }));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cors());
 
 // Routes
 app.post("/shorturl", urlController.postShortUrl);
@@ -36,9 +35,9 @@ process.on("unhandledRejection", (reason: Error | any) => {
 
 // Server port
 if (!module.parent) {
-  const port = 3000;
-  app.listen(port, () =>
-    console.log(`API is ready at http://localhost:${port}/`)
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () =>
+    console.log(`API is ready at port ${PORT}`)
   );
 }
 

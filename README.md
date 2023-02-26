@@ -1,11 +1,13 @@
 # FreeCodeCamp - Back End Development and APIs Course
 
+> ⚠️ For some unknown reason (CORS error) I had to host this project in other place to pass the FreeCodeCamp Tests.
+
 ## Certification Project - URL Shortener Microservice
 
-- [ ] Waiting:You should provide your own project, not the example URL.
-- [ ] Waiting:You can POST a URL to `/api/shorturl` and get a JSON response with `original_url` and `short_url` properties. Here's an example: `{ original_url : 'https://freeCodeCamp.org', short_url : 1}`
-- [ ] Waiting:When you visit `/api/shorturl/<short_url>`, you will be redirected to the original URL.
-- [ ] Waiting:If you pass an invalid URL that doesn't follow the valid `http://www.example.com` format, the JSON response will contain `{ error: 'invalid url' }`
+- [x] Waiting:You should provide your own project, not the example URL.
+- [x] Waiting:You can POST a URL to `/api/shorturl` and get a JSON response with `original_url` and `short_url` properties. Here's an example: `{ original_url : 'https://freeCodeCamp.org', short_url : 1}`
+- [x] Waiting:When you visit `/api/shorturl/<short_url>`, you will be redirected to the original URL.
+- [x] Waiting:If you pass an invalid URL that doesn't follow the valid `http://www.example.com` format, the JSON response will contain `{ error: 'invalid url' }`
 
 ---
 
@@ -26,3 +28,22 @@ When you are done, make sure a working demo of your project is hosted somewhere 
 ---
 
 **HINT:** Do not forget to use a body parsing middleware to handle the POST requests. Also, you can use the function `dns.lookup(host, cb)` from the `dns` core module to verify a submitted URL.
+
+## Unit Tests
+
+```text
+PASS  tests/Url.Service.spec.ts
+  UrlService
+    validateUrl
+      ✓ should return false when the URL is empty (2 ms)
+      ✓ should return false when the URL protocol is missing (1 ms)
+      ✓ should return false when the DNS lookup fails (216 ms)
+      ✓ should return true when the URL is valid and the DNS lookup succeeds (24 ms)
+    createShortUrl
+      ✓ should return null if the URL is invalid (7 ms)
+      ✓ should create a short URL if the URL is valid (3 ms)
+    getShortUrl
+      ✓ should return null if the short URL ID is not a number (1 ms)
+      ✓ should return null if the short URL ID does not exist in the database (1 ms)
+        ✓ should return the original URL if the short URL ID exists in the database (2 ms)
+```

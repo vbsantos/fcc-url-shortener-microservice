@@ -1,18 +1,8 @@
 import { config as configEnvironmentVariables } from "dotenv";
-import mysql from "mysql2/promise";
+import mysql, { Pool } from "mysql2/promise";
 
 // Environment Variables
 configEnvironmentVariables();
-
-const pool = mysql.createPool({
-  host: process.env.DATABASE_HOST,
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
-  ssl: {
-    rejectUnauthorized: true,
-  },
-});
 
 export interface UrlEntityI {
   id: string;
@@ -25,13 +15,24 @@ export interface UrlRepositoryI {
 }
 
 export class UrlRepository implements UrlRepositoryI {
+  private pool: Pool;
+
   constructor() {
     this.addUrl = this.addUrl.bind(this);
     this.getUrlById = this.getUrlById.bind(this);
+    this.pool = mysql.createPool({
+      host: process.env.DATABASE_HOST,
+      user: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
+      ssl: {
+        rejectUnauthorized: true,
+      },
+    });
   }
 
   public async addUrl(url: string): Promise<UrlEntityI> {
-    const connection = await pool.getConnection();
+    const connection = await this.pool.getConnection();
 
     try {
       // FIXME: type
@@ -50,7 +51,7 @@ export class UrlRepository implements UrlRepositoryI {
   }
 
   public async getUrlById(id: number): Promise<UrlEntityI | null> {
-    const connection = await pool.getConnection();
+    const connection = await this.pool.getConnection();
 
     try {
       // FIXME: type

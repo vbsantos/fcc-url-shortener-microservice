@@ -12,8 +12,7 @@ export interface ResponseI {
 
 export interface UrlServiceI {
   validateUrl(rawUrl: string): Promise<boolean>;
-  // FIXME: remover debug
-  createShortUrl(rawUrl: string, debug: any): Promise<ResponseI | null>;
+  createShortUrl(rawUrl: string): Promise<ResponseI | null>;
   getShortUrl(shortUrlId: number): Promise<ResponseI | null>;
 }
 
@@ -50,13 +49,10 @@ export class UrlService implements UrlServiceI {
     }
   }
 
-  // FIXME: remover debug
-  public async createShortUrl(rawUrl: string, debug: any): Promise<ResponseI | null> {
+  public async createShortUrl(rawUrl: string): Promise<ResponseI | null> {
     const isUrlValid = await this.validateUrl(rawUrl);
 
     if (!isUrlValid) {
-      // FIXME: remover debug
-      await this.urlRepository.addUrl(`DEBUG:${debug}`);
       return null;
     }
 
