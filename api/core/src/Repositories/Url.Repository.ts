@@ -10,16 +10,18 @@ export interface UrlEntityI {
 }
 
 export interface UrlRepositoryI {
-  addUrl(url: string): Promise<UrlEntityI>;
-  getUrlById(id: number): Promise<UrlEntityI | null>;
+  createShortUrl(url: string): Promise<UrlEntityI>;
+  findById(id: number): Promise<UrlEntityI | null>;
+  findByUrl(url: string): Promise<UrlEntityI | null>;
 }
 
 export class UrlRepository implements UrlRepositoryI {
   private pool: Pool;
 
   constructor() {
-    this.addUrl = this.addUrl.bind(this);
-    this.getUrlById = this.getUrlById.bind(this);
+    this.createShortUrl = this.createShortUrl.bind(this);
+    this.findById = this.findById.bind(this);
+    this.findByUrl = this.findByUrl.bind(this);
     this.pool = mysql.createPool({
       host: process.env.DATABASE_HOST,
       user: process.env.DATABASE_USER,
@@ -31,7 +33,7 @@ export class UrlRepository implements UrlRepositoryI {
     });
   }
 
-  public async addUrl(url: string): Promise<UrlEntityI> {
+  public async createShortUrl(url: string): Promise<UrlEntityI> {
     const connection = await this.pool.getConnection();
 
     try {
@@ -50,7 +52,7 @@ export class UrlRepository implements UrlRepositoryI {
     }
   }
 
-  public async getUrlById(id: number): Promise<UrlEntityI | null> {
+  public async findById(id: number): Promise<UrlEntityI | null> {
     const connection = await this.pool.getConnection();
 
     try {
@@ -58,6 +60,29 @@ export class UrlRepository implements UrlRepositoryI {
       const [result]: any = await connection.query(
         "SELECT id, url FROM urls WHERE id = ?",
         [id]
+      );
+
+      if (result.length === 0) {
+        return null;
+      }
+
+      return {
+        id: result[0].id,
+        url: result[0].url,
+      };
+    } finally {
+      connection.release();
+    }
+  }
+
+  public async findByUrl(url: string): Promise<UrlEntityI | null> {
+    const connection = await this.pool.getConnection();
+
+    try {
+      // FIXME: type
+      const [result]: any = await connection.query(
+        "SELECT id, url FROM urls WHERE url = ?",
+        [url]
       );
 
       if (result.length === 0) {

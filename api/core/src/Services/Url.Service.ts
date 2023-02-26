@@ -3,7 +3,7 @@ import util from "util";
 import url from "url";
 
 // Repository
-import { UrlRepositoryI } from "../Repositories/Url.Repository";
+import { UrlEntityI, UrlRepositoryI } from "../Repositories/Url.Repository";
 
 export interface ResponseI {
   original_url: string;
@@ -56,7 +56,11 @@ export class UrlService implements UrlServiceI {
       return null;
     }
 
-    const dbResponse = await this.urlRepository.addUrl(rawUrl);
+    let dbResponse: UrlEntityI | null;
+    dbResponse = await this.urlRepository.findByUrl(rawUrl);
+    if (!dbResponse) {
+      dbResponse = await this.urlRepository.createShortUrl(rawUrl);
+    }
 
     const response: ResponseI = {
       original_url: rawUrl,
@@ -71,7 +75,7 @@ export class UrlService implements UrlServiceI {
       return null;
     }
 
-    const dbResponse = await this.urlRepository.getUrlById(shortUrlId);
+    const dbResponse = await this.urlRepository.findById(shortUrlId);
 
     if (!dbResponse?.id || !dbResponse?.url) {
       return null;

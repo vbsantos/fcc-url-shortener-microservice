@@ -19,7 +19,6 @@ export class UrlController implements UrlControllerI {
   public async postShortUrl(req: Request, res: Response): Promise<void> {
     const { url }: { url: string } = req.body;
 
-    // FIXME
     const response = await this.urlService.createShortUrl(url);
 
     if (!response) {

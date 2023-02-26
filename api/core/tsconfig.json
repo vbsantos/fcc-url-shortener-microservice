@@ -10,11 +10,15 @@
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
     "types": [
       "node",
-      "jest"
+      "jest",
     ]
   },
+  "include": [
+    "src",
+  ],
   "exclude": [
+    "__tests__",
     "node_modules",
-    "**/*.spec.ts"
+    "dist"
   ]
 }

@@ -45,5 +45,5 @@ PASS  tests/Url.Service.spec.ts
     getShortUrl
       ✓ should return null if the short URL ID is not a number (1 ms)
       ✓ should return null if the short URL ID does not exist in the database (1 ms)
-        ✓ should return the original URL if the short URL ID exists in the database (2 ms)
+      ✓ should return the original URL if the short URL ID exists in the database (2 ms)
 ```
