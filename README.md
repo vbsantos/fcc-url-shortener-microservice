@@ -41,7 +41,8 @@ PASS  tests/Url.Service.spec.ts
       ✓ should return true when the URL is valid and the DNS lookup succeeds (24 ms)
     createShortUrl
       ✓ should return null if the URL is invalid (7 ms)
-      ✓ should create a short URL if the URL is valid (3 ms)
+      ✓ should create a short URL if the URL is valid and is not already created (12 ms)
+      ✓ should not create a short URL if it is already created (3 ms)
     getShortUrl
       ✓ should return null if the short URL ID is not a number (1 ms)
       ✓ should return null if the short URL ID does not exist in the database (1 ms)
